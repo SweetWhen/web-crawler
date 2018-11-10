@@ -3,12 +3,12 @@ package parser
 import (
 	"regexp"
 
-	"imooc.com/ccmouse/learngo/crawler/config"
-	"imooc.com/ccmouse/learngo/crawler/engine"
+	"coding-180/crawler/config"
+	"coding-180/crawler/engine"
 )
 
-const cityListRe = `<a href="(http://www.zhenai.com/zhenghun/[0-9a-z]+)"[^>]*>([^<]+)</a>`
-
+//const cityListRe = `<a href="(http://www.zhenai.com/zhenghun/[0-9a-z]+)"[^>]*>([^<]+)</a>`
+const cityListRe = `{linkContent:"([^"]+)",linkURL:"(http://m.zhenai.com/zhenghun/[0-9a-z]+)"}`
 func ParseCityList(
 	contents []byte, _ string) engine.ParseResult {
 	re := regexp.MustCompile(cityListRe)
@@ -18,7 +18,7 @@ func ParseCityList(
 	for _, m := range matches {
 		result.Requests = append(
 			result.Requests, engine.Request{
-				Url: string(m[1]),
+				Url: string(m[2]),
 				Parser: engine.NewFuncParser(
 					ParseCity, config.ParseCity),
 			})

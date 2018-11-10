@@ -11,10 +11,10 @@ import (
 	"regexp"
 
 	"gopkg.in/olivere/elastic.v5"
-	"imooc.com/ccmouse/learngo/crawler/config"
-	"imooc.com/ccmouse/learngo/crawler/engine"
-	"imooc.com/ccmouse/learngo/crawler/frontend/model"
-	"imooc.com/ccmouse/learngo/crawler/frontend/view"
+	"coding-180/crawler/config"
+	"coding-180/crawler/engine"
+	"coding-180/crawler/frontend/model"
+	"coding-180/crawler/frontend/view"
 )
 
 type SearchResultHandler struct {
@@ -37,16 +37,18 @@ func CreateSearchResultHandler(
 	}
 }
 
+//client的请求中带了/search的话会到这个函数中。
 func (h SearchResultHandler) ServeHTTP(
 	w http.ResponseWriter, req *http.Request) {
+		//从request中拿q参数
 	q := strings.TrimSpace(req.FormValue("q"))
-
+	//从request中拿from参数
 	from, err := strconv.Atoi(
 		req.FormValue("from"))
 	if err != nil {
 		from = 0
 	}
-
+//根据url去数据库拿记录
 	page, err := h.getSearchResult(q, from)
 	if err != nil {
 		http.Error(w, err.Error(),
@@ -68,11 +70,17 @@ func (h SearchResultHandler) getSearchResult(
 	q string, from int) (model.SearchResult, error) {
 	var result model.SearchResult
 	result.Query = q
-
+//向数据库请求数据。。。
+	tmpQ := q
+	if strings.Contains(tmpQ, ":"){
+		tmpQ = rewriteQueryString(tmpQ)
+	}
+	if tmpQ == "" {
+		tmpQ = "*"
+	}
 	resp, err := h.client.
 		Search(config.ElasticIndex).
-		Query(elastic.NewQueryStringQuery(
-			rewriteQueryString(q))).
+		Query(elastic.NewQueryStringQuery(tmpQ)).
 		From(from).
 		Do(context.Background())
 

@@ -7,12 +7,12 @@ import (
 	"errors"
 
 	"gopkg.in/olivere/elastic.v5"
-	"imooc.com/ccmouse/learngo/crawler/engine"
+	"coding-180/crawler/engine"
 )
 
-func ItemSaver(
-	index string) (chan engine.Item, error) {
+func ItemSaver( dbAddr,	index string) (chan engine.Item, error) {
 	client, err := elastic.NewClient(
+		elastic.SetURL(dbAddr),
 		// Must turn off sniff in docker
 		elastic.SetSniff(false))
 

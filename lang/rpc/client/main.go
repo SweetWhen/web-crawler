@@ -5,7 +5,7 @@ import (
 	"net"
 	"net/rpc/jsonrpc"
 
-	"imooc.com/ccmouse/learngo/lang/rpc"
+	"coding-180/lang/rpc"
 )
 
 func main() {

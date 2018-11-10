@@ -3,11 +3,15 @@ package client
 import (
 	"log"
 
-	"imooc.com/ccmouse/learngo/crawler/engine"
-	"imooc.com/ccmouse/learngo/crawler_distributed/config"
-	"imooc.com/ccmouse/learngo/crawler_distributed/rpcsupport"
+	"coding-180/crawler/engine"
+	"coding-180/crawler_distributed/config"
+	"coding-180/crawler_distributed/rpcsupport"
 )
 
+/*
+初始化并连接一个rpc client到itemsaver，同时生成一个goroutine不断的从一个channel中获取要保存的item，
+如果获取到了就发给itemsaver。这个函数返回这个channel
+*/
 func ItemSaver(
 	host string) (chan engine.Item, error) {
 	client, err := rpcsupport.NewClient(host)

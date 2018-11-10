@@ -5,17 +5,17 @@ import (
 
 	"time"
 
-	"imooc.com/ccmouse/learngo/crawler/engine"
-	"imooc.com/ccmouse/learngo/crawler/model"
-	"imooc.com/ccmouse/learngo/crawler_distributed/config"
-	"imooc.com/ccmouse/learngo/crawler_distributed/rpcsupport"
+	"coding-180/crawler/engine"
+	"coding-180/crawler/model"
+	"coding-180/crawler_distributed/config"
+	"coding-180/crawler_distributed/rpcsupport"
 )
 
 func TestItemSaver(t *testing.T) {
 	const host = ":1234"
 
 	// start ItemSaverServer
-	go serveRpc(host, "test1")
+	go serveRpc(host, "http://127.0.0.1:9200","test1")
 	time.Sleep(time.Second)
 
 	// start ItemSaverClient

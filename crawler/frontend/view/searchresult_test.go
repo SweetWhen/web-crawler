@@ -4,9 +4,9 @@ import (
 	"os"
 	"testing"
 
-	"imooc.com/ccmouse/learngo/crawler/engine"
-	"imooc.com/ccmouse/learngo/crawler/frontend/model"
-	common "imooc.com/ccmouse/learngo/crawler/model"
+	"coding-180/crawler/engine"
+	"coding-180/crawler/frontend/model"
+	common "coding-180/crawler/model"
 )
 
 func TestSearchResultView_Render(t *testing.T) {
@@ -32,13 +32,11 @@ func TestSearchResultView_Render(t *testing.T) {
 			Income:     "3001-5000元",
 			Gender:     "女",
 			Name:       "安静的雪",
-			Xinzuo:     "牡羊座",
-			Occupation: "人事/行政",
 			Marriage:   "离异",
 			House:      "已购房",
-			Hokou:      "山东菏泽",
+			Hukou:      "山东菏泽",
 			Education:  "大学本科",
-			Car:        "未购车",
+			Cars:        "未购车",
 		},
 	}
 	for i := 0; i < 10; i++ {

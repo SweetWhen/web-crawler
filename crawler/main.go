@@ -1,20 +1,24 @@
 package main
 
 import (
-	"imooc.com/ccmouse/learngo/crawler/config"
-	"imooc.com/ccmouse/learngo/crawler/engine"
-	"imooc.com/ccmouse/learngo/crawler/persist"
-	"imooc.com/ccmouse/learngo/crawler/scheduler"
-	"imooc.com/ccmouse/learngo/crawler/zhenai/parser"
+	"coding-180/crawler/config"
+	"coding-180/crawler/engine"
+	"coding-180/crawler/persist"
+	"coding-180/crawler/scheduler"
+	"coding-180/crawler/zhenai/parser"
+	"flag"
+	"log"
 )
+var dbAddr = flag.String("db_addr", "http://127.0.0.1:9200", "db addr, the db must up")
 
 func main() {
-	itemChan, err := persist.ItemSaver(
+	flag.Parse()
+	itemChan, err := persist.ItemSaver(*dbAddr,
 		config.ElasticIndex)
 	if err != nil {
 		panic(err)
 	}
-
+	log.Printf("Connected to db addr: %s\n", *dbAddr )
 	e := engine.ConcurrentEngine{
 		Scheduler:        &scheduler.QueuedScheduler{},
 		WorkerCount:      100,
@@ -23,7 +27,7 @@ func main() {
 	}
 
 	e.Run(engine.Request{
-		Url: "http://www.starter.url.here",
+		Url: "http://www.zhenai.com/zhenghun",
 		Parser: engine.NewFuncParser(
 			parser.ParseCityList,
 			config.ParseCityList),

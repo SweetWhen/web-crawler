@@ -1,6 +1,6 @@
 package worker
 
-import "imooc.com/ccmouse/learngo/crawler/engine"
+import "coding-180/crawler/engine"
 
 type CrawlService struct{}
 
@@ -16,6 +16,7 @@ func (CrawlService) Process(
 		return err
 	}
 
+	//简单的给result赋值就把结果给返回给client了...
 	*result = SerializeResult(engineResult)
 	return nil
 }

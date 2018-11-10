@@ -3,19 +3,17 @@ package model
 import "encoding/json"
 
 type Profile struct {
-	Name       string
-	Gender     string
-	Age        int
-	Height     int
-	Weight     int
-	Income     string
-	Marriage   string
-	Education  string
-	Occupation string
-	Hokou      string
-	Xinzuo     string
-	House      string
-	Car        string
+	Name 		string
+	Gender		string
+	Age 		int
+	Height 		int
+	Weight 		int
+	Income 		string
+	Marriage 	string
+	Education   string
+	Hukou 		string
+	House       string
+	Cars        string
 }
 
 func FromJsonObj(o interface{}) (Profile, error) {

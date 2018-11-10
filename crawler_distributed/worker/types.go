@@ -6,9 +6,9 @@ import (
 	"fmt"
 	"log"
 
-	"imooc.com/ccmouse/learngo/crawler/config"
-	"imooc.com/ccmouse/learngo/crawler/engine"
-	"imooc.com/ccmouse/learngo/crawler/zhenai/parser"
+	"coding-180/crawler/config"
+	"coding-180/crawler/engine"
+	"coding-180/crawler/zhenai/parser"
 )
 
 type SerializedParser struct {
@@ -81,6 +81,8 @@ func DeserializeResult(
 	return result
 }
 
+//返回值中的engine.Parser是一个interface，这个interface只要某个对象实现了它的方法它就可以接受
+//对象里面有一个函数属性，这里直接把一个函数当成一等公民（类似一个变量）赋给一个对象的属性了，非常之灵活。
 func deserializeParser(
 	p SerializedParser) (engine.Parser, error) {
 	switch p.Name {

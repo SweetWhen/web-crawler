@@ -1,28 +1,29 @@
-在这里非常感谢大加对这门课程的支持，希望同学们都能够获得
-收获。以下是我录制完视频后又对代码做的一些小修改，包括修
-复一些低级错误，以及美化。
-另外，因为最终项目涉及第三方，我隐去了爬虫部分的起始url，
-大家需要根据视频替换真正的url后方可运行。
+1）先启动Elasticsearch，并通过web页面登录确认Elasticsearch在容器中启动正常
+#虚拟机中跑elasticsearch经常出现内存不足，不能够启动JVM，下面这个命令可以绕过
+docker run  --name esl2 -e ES_JAVA_OPTS="-Xms512m -Xmx512m" -p 9200:9200 elasticsearch
 
-crawler_distributed/rpcsupport/rpc.go ServeRpc
-    去掉了最后的return nil
+2）启动frontend web服务器
+设置查询数据库web工作路径，
+/opt/mygo/src/coding-180/crawler/frontend/starter.go文件的
+const webRoot = "/opt/mygo/src/coding-180/crawler/frontend/view"指定了web跟目录。
+然后启动 go run starter.go 默认是监听8888端口，启动之后可以web访问一下
 
-crawler/frontend/controller/searchresult.go
-    修复了"上一页"计算错误的问题
+3）启动itemsaver 模块（可在不同主机上启动）：
+root@myubuntu:server# go run itemsaver.go -port 1234
+2018/11/09 22:28:42 Listening on :1234
 
-crawler/config/config.go
-    将大部分config移动到这里，这样crawler不会再依赖
-    crawler_distributed
+4）启动worker模块（可在不同主机上启动）：
+root@myubuntu:server# pwd
+/opt/mygo/src/coding-180/crawler_distributed/worker/server
+root@myubuntu:server# go run worker.go --help
+Usage of /tmp/go-build003730233/b001/exe/worker:
+  -port int
+    	the port for me to listen on
+exit status 2
+root@myubuntu:server# go run worker.go -port 9000
+2018/11/09 22:30:36 Listening on :9000
 
-crawler_distributed/main.go
-    修复了如果没有worker连接会High CPU（死循环）的错误
+5）启动engine模块，并同时指定itemsaver和worker地址：
+go run main.go --help
 
-crawler/fetcher/fetcher.go
-    提取verboseLogging参数以供配置
 
-crawler/main.go & crawler_distributed/main.go
-    隐去爬虫起始页面url
-
-crawler/engine/concurrent.go
-    修复了go func() { e.ItemChan <- item }()中
-    分发item时变量作用域的问题

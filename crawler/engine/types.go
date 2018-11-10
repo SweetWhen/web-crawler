@@ -1,6 +1,6 @@
 package engine
 
-import "imooc.com/ccmouse/learngo/crawler/config"
+import "coding-180/crawler/config"
 
 type ParserFunc func(
 	contents []byte, url string) ParseResult
