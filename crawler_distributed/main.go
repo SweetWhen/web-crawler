@@ -17,20 +17,29 @@ import (
 	itemsaver "coding-180/crawler_distributed/persist/client"
 	"coding-180/crawler_distributed/rpcsupport"
 	worker "coding-180/crawler_distributed/worker/client"
+	"fmt"
 )
 
 var (
 	itemSaverHost = flag.String(
-		"itemsaver_host", "", "itemsaver host")
+		"itemsaver_host", "", "itemsaver host: 127.0.0.1:1234")
 
 	workerHosts = flag.String(
 		"worker_hosts", "",
-		"worker hosts (comma separated)")
+		"worker hosts (comma separated): 127.0.0.1:9000,127.0.0.1:9001")
 )
 
 func main() {
 	flag.Parse()
 	//得到保存item的channel
+	if *itemSaverHost == "" {
+		fmt.Println("must specify a itemsaver host!")
+		return
+	}
+	if *workerHosts == "" {
+		fmt.Println("must specify a worker host!")
+		return
+	}
 	itemChan, err := itemsaver.ItemSaver(
 		*itemSaverHost)
 	if err != nil {
