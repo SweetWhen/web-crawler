@@ -32,7 +32,28 @@ func Fetch(url string) ([]byte, error) {
 	if verboseLogging {
 		log.Printf("Fetching url %s", url)
 	}
-	resp, err := http.Get(url)
+	//resp, err := http.Get(url)
+	client := &http.Client{}
+	request, err := http.NewRequest("GET", url, nil)
+	if err != nil {
+		return []byte{}, err
+	}
+	fmt.Println("======================================================")
+	fmt.Println(url)
+	request.Header.Set(
+		"Accept",
+		"text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8")
+	request.Header.Set(
+		"Upgrade-Insecure-Requests",
+		"1")
+	request.Header.Set(
+		"Proxy-Connection",
+		"keep-alive")
+	request.Header.Set(
+		"User-Agent",
+		"Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.77 Safari/537.36" )
+
+	resp,err := client.Do(request)
 	if err != nil {
 		return nil, err
 	}

@@ -7,7 +7,7 @@ import (
 	"coding-180/crawler/config"
 	"coding-180/crawler/engine"
 	"coding-180/crawler/model"
-	//"fmt"
+
 )
 
 var userName = regexp.MustCompile(`<span class="nick_name">昵称</span>\s*<span>([^<]+)</span>` )
